@@ -1,5 +1,7 @@
 package lk.edu.student;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -39,23 +41,39 @@ public class Main extends HttpServlet{
 //    }
 
 
-    //3
-    //reading a form data
+//    //3
+//    //reading a form data
+//    @Override
+//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+////        String name = req.getParameter("name");
+////        Part file = req.getPart("file");
+////        String submittedFileName = file.getSubmittedFileName();//to get the file name
+////        resp.setContentType("text/plain");
+////        resp.getWriter().write("name:"+name+"\nsubmittedFileName:"+submittedFileName);
+//        //sending two files
+//        String name = req.getParameter("name");
+//        Collection<Part> parts = req.getParts();
+//        for(Part part :parts){
+//            String submittedFileName1 = part.getSubmittedFileName();
+//            resp.setContentType("text/plain");
+//            resp.getWriter().write("name: "+name+"\nsubmittedFileName:"+submittedFileName1);
+//        }
+//    }
+
+
+    //4
+    //json
+    ////read json data from json object
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        String name = req.getParameter("name");
-//        Part file = req.getPart("file");
-//        String submittedFileName = file.getSubmittedFileName();//to get the file name
-//        resp.setContentType("text/plain");
-//        resp.getWriter().write("name:"+name+"\nsubmittedFileName:"+submittedFileName);
-        //sending two files
-        String name = req.getParameter("name");
-        Collection<Part> parts = req.getParts();
-        for(Part part :parts){
-            String submittedFileName1 = part.getSubmittedFileName();
-            resp.setContentType("text/plain");
-            resp.getWriter().write("name: "+name+"\nsubmittedFileName:"+submittedFileName1);
-        }
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = mapper.readTree(req.getReader());
+
+        String name = node.get("name").asText();//data can come by any method.may be like a boolean or value
+        String address = node.get("address").asText();
+
+        resp.setContentType("application/json");
+        resp.getWriter().write("name: " + name + "\naddress: " + address);
 
     }
 }
