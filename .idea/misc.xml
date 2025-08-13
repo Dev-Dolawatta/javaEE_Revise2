@@ -6,6 +6,7 @@
       <list>
         <option value="$PROJECT_DIR$/javaEE/servletBasics/pom.xml" />
         <option value="$PROJECT_DIR$/javaEE/MappingSpecifications/pom.xml" />
+        <option value="$PROJECT_DIR$/MIME_Types/pom.xml" />
       </list>
     </option>
   </component>
