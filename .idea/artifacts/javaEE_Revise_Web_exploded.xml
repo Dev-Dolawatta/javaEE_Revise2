@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="javaEE_Revise:Web exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/javaEE_Revise_Web_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="javaEE_Revise/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="javaEE_Revise" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>
