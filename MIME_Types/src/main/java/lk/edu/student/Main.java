@@ -1,5 +1,6 @@
 package lk.edu.student;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
@@ -14,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @WebServlet("/mime")
@@ -61,19 +63,36 @@ public class Main extends HttpServlet{
 //    }
 
 
-    //4
+//    //4
+//    //json
+//    ////read json data from json object
+//    @Override
+//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+//        ObjectMapper mapper = new ObjectMapper();
+//        JsonNode node = mapper.readTree(req.getReader());
+//
+//        String name = node.get("name").asText();//data can come by any method.may be like a boolean or value
+//        String address = node.get("address").asText();
+//
+//        resp.setContentType("application/json");
+//        resp.getWriter().write("name: " + name + "\naddress: " + address);
+//
+//    }
+
+    //4.1
     //json
-    ////read json data from json object
+    ////reading data from json array
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode node = mapper.readTree(req.getReader());
+        List<JsonNode> users = mapper.readValue(req.getReader(), new TypeReference<List<JsonNode>>(){});
+        for(JsonNode user : users){
+            String name = user.get("name").asText();
+            String address = user.get("address").asText();
 
-        String name = node.get("name").asText();//data can come by any method.may be like a boolean or value
-        String address = node.get("address").asText();
-
-        resp.setContentType("application/json");
-        resp.getWriter().write("name: " + name + "\naddress: " + address);
-
+            resp.setContentType("application/json");
+            resp.getWriter().write("name: "+name+"\naddress: "+address+"\n");
+        }
     }
 }
