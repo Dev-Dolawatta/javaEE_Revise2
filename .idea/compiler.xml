@@ -9,6 +9,7 @@
         <module name="MappingSpecifications" />
         <module name="MIME_Types" />
         <module name="servletBasics" />
+        <module name="EMS" />
       </profile>
     </annotationProcessing>
   </component>
