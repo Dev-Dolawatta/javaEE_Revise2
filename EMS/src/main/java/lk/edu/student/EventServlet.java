@@ -8,10 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,4 +43,37 @@ public class EventServlet extends HttpServlet {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/eventdb","root","Ijse@1234");
+            PreparedStatement preparedStatement = connection.prepareStatement("insert into event(eid,ename,edescription,edate,eplace) values(?,?,?,?,?)");
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String,String> event = mapper.readValue(req.getReader(), Map.class);
+            preparedStatement.setString(1, event.get("eid"));
+            preparedStatement.setString(2, event.get("ename"));
+            preparedStatement.setString(3, event.get("edescription"));
+            preparedStatement.setString(4, event.get("edate"));
+            preparedStatement.setString(5, event.get("eplace"));
+            int rows = preparedStatement.executeUpdate();
+            resp.setContentType("application/json");
+            mapper.writeValue(resp.getWriter(),event);
+
+//        } catch (ClassNotFoundException e) {
+//            throw new RuntimeException(e);
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
+
 }
