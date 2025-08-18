@@ -16,9 +16,18 @@ import java.util.Map;
 
 @WebServlet("/event")
 public class EventServlet extends HttpServlet {
+
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE,PUT");
+        resp.setHeader("Access-Control-Allow-Headers", "content-type");
+        resp.setStatus(HttpServletResponse.SC_OK);
+    }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            doOptions(req,resp);
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/eventdb","root","Ijse@1234");
             ResultSet resultSet = connection.prepareStatement("select * from event").executeQuery();
@@ -47,6 +56,7 @@ public class EventServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            doOptions(req,resp);
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/eventdb","root","Ijse@1234");
             PreparedStatement preparedStatement = connection.prepareStatement("insert into event(eid,ename,edescription,edate,eplace) values(?,?,?,?,?)");
@@ -71,14 +81,6 @@ public class EventServlet extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setHeader("Access-Control-Allow-Origin", "*");
-        resp.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-        resp.setHeader("Access-Control-Allow-Headers", "content-type");
-        resp.setStatus(HttpServletResponse.SC_OK);
     }
 
 }
