@@ -73,7 +73,12 @@ public class EventServlet extends HttpServlet {
         }
     }
 
-
-
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+        resp.setHeader("Access-Control-Allow-Headers", "content-type");
+        resp.setStatus(HttpServletResponse.SC_OK);
+    }
 
 }
