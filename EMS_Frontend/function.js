@@ -21,3 +21,26 @@ $("#getAllEvents").click(function() {
         }
     });
 });
+$("#createEvent").click(function(){
+    const event = {
+        eid: $("#eid").val(),
+        ename: $("#ename").val(),
+        edescription: $('#edescription').val(),
+        edate: $('#edate').val(),
+        eplace: $('#eplace').val()
+
+    }
+    $.ajax({
+        url:"http://localhost:8080/EMS_Web_exploded/event",
+        method:"POST",
+        contentType:"application/json",
+        data:JSON.stringify(event),//converts js object into json
+        success:function(response){
+            alert('Event created');
+            $('#getAllEvents').click();
+        },
+        error: function () {
+            alert("Error creating event");
+        }
+    });
+});
